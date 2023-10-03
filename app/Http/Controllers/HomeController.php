@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Airport;
 use App\User;
 use Modules\Hotel\Models\Hotel;
 use Modules\Location\Models\LocationCategory;
@@ -10,6 +11,7 @@ use Modules\News\Models\Tag;
 use Modules\News\Models\News;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use PHPExcel;
 class HomeController extends Controller
 {
     /**
@@ -37,13 +39,15 @@ class HomeController extends Controller
             $seo_meta = $page->getSeoMetaWithTranslation(app()->getLocale(), $translation);
             $seo_meta['full_url'] = url("/");
             $seo_meta['is_homepage'] = true;
+
             $data = [
                 'row'=>$page,
                 "seo_meta"=> $seo_meta,
                 'translation'=>$translation,
-                'is_home' => true,
+                'is_home' => true
             ];
-            return view('Page::frontend.detail',$data);
+
+            return view('Page::frontend.detail', $data);
         }
         $model_News = News::where("status", "publish");
         $data = [

@@ -201,6 +201,7 @@ class Template extends BaseModel
     {
         $blocks = $this->getAllBlocks();
         $items = json_decode($this->content, true);
+        
         if (empty($items))
             return '';
         $html = '';
