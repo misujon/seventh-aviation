@@ -1,28 +1,43 @@
 <form action="{{ route("flight.search") }}" class="form bravo_form d-flex mb-1 py-2" method="get">
     <div class="g-field-search">
         <div class="row ">
-            @php $flight_search_fields = setting_item_array('flight_search_fields');
-    $flight_search_fields = array_values(\Illuminate\Support\Arr::sort($flight_search_fields, function ($value) {
-        return $value['position'] ?? 0;
-    }));
+            @php 
+                $flight_search_fields = setting_item_array('flight_search_fields');
+                $flight_search_fields = array_values(\Illuminate\Support\Arr::sort($flight_search_fields, function ($value) {
+                    return $value['position'] ?? 0;
+                }));
             @endphp
             @if(!empty($flight_search_fields))
+                <div class="col-12">
+                    <span class="d-block text-gray-1  font-weight-normal mb-0 text-left">Trip Type</span>
+                    <div class="form-group d-flex font-size-1 text-lh-md text-secondary mb-3">
+                        <div class="custom-control custom-checkbox mr-5">
+                            <input id="term_1" class="custom-control-input" checked="" type="radio" name="tri_type" value="oneway">
+                            <label class="custom-control-label" for="term_1">One Way</label>
+                        </div>
+
+                        <div class="custom-control custom-checkbox">
+                            <input id="term_2" class="custom-control-input" type="radio" name="tri_type" value="round">
+                            <label class="custom-control-label" for="term_2">Round Trip</label>
+                        </div>
+                    </div>
+                </div>
                 @foreach($flight_search_fields as $field)
                     @php $field['title'] = $field['title_'.app()->getLocale()] ?? $field['title'] ?? "" @endphp
                     <div class="col-md-{{ $field['size'] ?? "6" }} mb-4 mb-xl-0 ">
                         @switch($field['field'])
-                            @case ('service_name')
+                            {{-- @case ('service_name')
                             @include('Flight::frontend.layouts.search.fields.service_name')
                             @break
                             @case ('location')
                             @include('Flight::frontend.layouts.search.fields.location')
-                            @break
+                            @break --}}
                             @case ('date')
                             @include('Flight::frontend.layouts.search.fields.date')
                             @break
-                            @case ('guests')
+                            {{-- @case ('guests')
                             @include('Flight::frontend.layouts.search.fields.guests')
-                            @break
+                            @break --}}
                             @case ('seat_type')
                             @include('Flight::frontend.layouts.search.fields.seat_type')
                             @break

@@ -1,15 +1,17 @@
 <?php
 namespace Modules\Flight\Controllers;
 
-use App\Http\Controllers\Controller;
-use Modules\Flight\Models\SeatType;
-use Modules\Location\Models\LocationCategory;
-use Modules\Flight\Models\Flight;
+use DB;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Modules\Location\Models\Location;
+use Modules\Flight\Models\Flight;
 use Modules\Review\Models\Review;
 use Modules\Core\Models\Attributes;
-use DB;
+use Modules\Flight\Models\SeatType;
+use App\Http\Controllers\Controller;
+use Modules\Location\Models\Location;
+use Modules\Location\Models\LocationCategory;
+use GuzzleHttp\Psr7\Request as ApiRequest;
 
 class FlightController extends Controller
 {
@@ -39,6 +41,28 @@ class FlightController extends Controller
     {
 
         $is_ajax = $request->query('_ajax');
+
+        $client = new Client();
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer 1|s0njhKrVPE8xSpD4S08jgYLxrVIJTpjZgv7lRAMc77aec1e7'
+        ];
+        $body = '{
+            "from": "'.$request->from_where.'",
+            "to": "'.$request->to_where.'",
+            "departure": "'.date('Y-m-d', strtotime(str_replace('/', '-', $request->start))).'",
+            "adult": "'.((isset($request->seat_type['adult']))?$request->seat_type['adult']:1).'",
+            "trip_type": "'.$request->tri_type.'"
+        }';
+
+        dump($body);
+        $request = new ApiRequest('POST', env('SEVENTH_AVIATION_API_URL')."/api/flight/search", $headers, $body);
+        $res = $client->sendAsync($request)->wait();
+        $results = collect(json_decode($res->getBody()->getContents(), true));
+        dd($results);
+
+
 
         if(!empty($request->query('limit'))){
             $limit = $request->query('limit');

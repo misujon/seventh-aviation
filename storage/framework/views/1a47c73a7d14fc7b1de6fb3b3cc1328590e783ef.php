@@ -19,7 +19,7 @@
 			$list_json = [];
 			foreach ($airports as $location) {
 				$list_json[] = [
-						'id'    => $location['id'],
+						'id'    => $location['code'],
 						'title' => $location['name'].' ('.$location['code'].')',
 				];
 			}
