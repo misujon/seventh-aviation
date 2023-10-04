@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FlightController;
 use Illuminate\Support\Facades\Route;
 
     /*
@@ -26,3 +27,7 @@ Route::get(config('admin.admin_route_prefix').'/logs', '\Rap2hpoutre\LaravelLogV
 
 Route::get('/install','InstallerController@redirectToRequirement')->name('LaravelInstaller::welcome');
 Route::get('/install/environment','InstallerController@redirectToWizard')->name('LaravelInstaller::environment');
+
+Route::prefix('mi-api/flight')->group(function(){
+    Route::get('search', [FlightController::class, 'index'])->name('flight.search.api.call');
+});

@@ -2,7 +2,8 @@
 use \Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'=>config('flight.flight_route_prefix')],function(){
-    Route::get('/','FlightController@index')->name('flight.search'); // Search
+    Route::get('/','FlightController@index')->name('flight.search');
+    Route::get('/{searchId}/{flightId}', 'FlightController@flightPricing')->name('flight.search.pricing');
     Route::post('getData/{id}',"FlightController@getData")->name('flight.getData');
 
 

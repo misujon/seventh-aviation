@@ -162,6 +162,8 @@
             }).on('apply.daterangepicker', function (ev, picker) {
                 $(this).val(picker.startDate.format('YYYY/MM/DD hh:mm:ss'));
             });
+
+			
         })
 	</script>
 @endpush
